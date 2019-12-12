@@ -2,24 +2,26 @@
     <h1>Admin &raquo; Stats</h1>
   </header>
 
-  <div class="well">
-    <%= link_to '+ New Product', [:new, :admin, :product], class: 'btn btn-info' %>
-  </div>
-
   <div class="panel panel-default products">
 
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th colspan="2"></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <th>Product Count</th>
+          <th>Category Count</th>
         </tr>
       </thead>
       <tbody>
-        <%# <%= render @products %> %>
+        <tr>
+          <td>
+              <div><%= @product_count %></div>
+              <%= link_to 'View Products', [:admin, :products], class: 'btn btn-info' %>
+          </td>
+          <td>
+              <div><%= @category_count %></div>
+              <%# <%= link_to 'View Categories', :categories, class: 'btn btn-info' %> %>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
