@@ -4,9 +4,7 @@ class Admin::DashboardController < ApplicationController
 
   def show
     @product_count       = Product.all.length
-    puts @product_count
     @category_count      = Category.all.length
-    puts @category_count
   end
 
 end
