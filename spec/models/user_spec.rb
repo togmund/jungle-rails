@@ -15,28 +15,6 @@ RSpec.describe User, type: :model do
       expect(@user).to be_valid
       expect(@user.errors.full_messages).to be_empty
     end
-    # validates :password, presence: true
-    it "is invalid without a password" do
-      @user = User.create(
-        first_name: "Frank",
-        last_name: "Rose",
-        email: "frank@rose.com",
-        password: nil,
-        password_confirmation: "password"
-      )
-      expect(@user.errors.full_messages).to include("Password can't be blank")
-    end
-    # validates :password_confirmation, presence: true
-    it "is invalid without a password confirmation" do
-      @user = User.create(
-        first_name: "Frank",
-        last_name: "Rose",
-        email: "frank@rose.com",
-        password: "password",
-        password_confirmation: nil
-      )
-      expect(@user.errors.full_messages).to include("Password confirmation can't be blank")
-    end
 
     it "is invalid when the password and password confirmation do not match" do
       @user = User.create(
@@ -71,7 +49,7 @@ RSpec.describe User, type: :model do
         password_confirmation: "password"
       )
       expect(@user.errors.full_messages)
-        .to include("Password confirmation doesn't match Password")
+        .to include("Email can't be blank")
     end
 
     it "is invalid when first_name is not present" do
@@ -80,10 +58,10 @@ RSpec.describe User, type: :model do
         last_name: "Rose",
         email: "used@email.com",
         password: "password",
-        password_confirmation: "albatross"
+        password_confirmation: "password"
       )
       expect(@user.errors.full_messages)
-        .to include("Password confirmation doesn't match Password")
+        .to include("First name can't be blank")
     end
     
     it "is invalid when last_name is not present" do
@@ -92,10 +70,10 @@ RSpec.describe User, type: :model do
         last_name: nil,
         email: "used@email.com",
         password: "password",
-        password_confirmation: "albatross"
+        password_confirmation: "password"
       )
       expect(@user.errors.full_messages)
-        .to include("Password confirmation doesn't match Password")
+        .to include("Last name can't be blank")
     end
 
   end
