@@ -6,7 +6,8 @@ RSpec.describe User, type: :model do
     # validates all attributes, presence: true
     it "is valid when all attributes are present" do
       @user = User.create(
-        name: "Frank Rose",
+        first_name: "Frank",
+        last_name: "Rose",
         email: "frank@rose.com",
         password: "password",
         password_confirmation: "password"
@@ -17,7 +18,8 @@ RSpec.describe User, type: :model do
     # validates :password, presence: true
     it "is invalid without a password" do
       @user = User.create(
-        name: "Frank Rose",
+        first_name: "Frank",
+        last_name: "Rose",
         email: "frank@rose.com",
         password: nil,
         password_confirmation: "password"
@@ -27,7 +29,8 @@ RSpec.describe User, type: :model do
     # validates :password_confirmation, presence: true
     it "is invalid without a password confirmation" do
       @user = User.create(
-        name: "Frank Rose",
+        first_name: "Frank",
+        last_name: "Rose",
         email: "frank@rose.com",
         password: "password",
         password_confirmation: nil
@@ -37,8 +40,57 @@ RSpec.describe User, type: :model do
 
     it "is invalid when the password and password confirmation do not match" do
       @user = User.create(
-        name: "Frank Rose",
+        first_name: "Frank",
+        last_name: "Rose",
         email: "frank@rose.com",
+        password: "password",
+        password_confirmation: "albatross"
+      )
+      expect(@user.errors.full_messages)
+        .to include("Password confirmation doesn't match Password")
+    end
+
+    it "is invalid when email is not unique" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Rose",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "albatross"
+      )
+      expect(@user.errors.full_messages)
+        .to include("Password confirmation doesn't match Password")
+    end
+
+    it "is invalid when email is not present" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Rose",
+        email: nil,
+        password: "password",
+        password_confirmation: "password"
+      )
+      expect(@user.errors.full_messages)
+        .to include("Password confirmation doesn't match Password")
+    end
+
+    it "is invalid when first_name is not present" do
+      @user = User.create(
+        first_name: nil,
+        last_name: "Rose",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "albatross"
+      )
+      expect(@user.errors.full_messages)
+        .to include("Password confirmation doesn't match Password")
+    end
+    
+    it "is invalid when last_name is not present" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: nil,
+        email: "used@email.com",
         password: "password",
         password_confirmation: "albatross"
       )
