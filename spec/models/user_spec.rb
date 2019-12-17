@@ -100,17 +100,60 @@ RSpec.describe User, type: :model do
   describe '.authenticate_with_credentials' do
 
     it "is invalid when the password is invalid" do
-    @user = User.create(
+      @user = User.create(
       first_name: "Frank",
       last_name: "Oak",
       email: "used@email.com",
       password: "password",
       password_confirmation: "password"
-    )
-    @user.authenticate_with_credentials("used@email.com","albatross")
-    expect(@user.errors.full_messages)
-      .to include("Last name can't be blank")
+      )
+      expect(@user.authenticate_with_credentials("used@email.com","albatross")).to be_nil
     end
+
+    it "is invalid when the email is invalid" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Oak",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "password"
+      )
+      expect(@user.authenticate_with_credentials("useed@email.com","password")).to be_nil
+    end
+
+    it "is valid when the credentials are valid" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Oak",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "password"
+      )
+      expect(@user.authenticate_with_credentials("used@email.com","password")).to match(@user)
+    end
+
+    it "is valid when there is extra whitespace in the email parameter" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Oak",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "password"
+      )
+      expect(@user.authenticate_with_credentials("   used@email.com   ","password")).to match(@user)
+    end
+
+    it "is valid when there are inconsistent casing in email parameter" do
+      @user = User.create(
+        first_name: "Frank",
+        last_name: "Oak",
+        email: "used@email.com",
+        password: "password",
+        password_confirmation: "password"
+      )
+      expect(@user.authenticate_with_credentials("USed@email.com","password")).to match(@user)
+    end
+
   end
 
 end
