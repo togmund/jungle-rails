@@ -97,14 +97,20 @@ RSpec.describe User, type: :model do
 
   end
 
-  # describe '.authenticate_with_credentials' do
+  describe '.authenticate_with_credentials' do
 
-  # end
+    it "is invalid when the password is invalid" do
+    @user = User.create(
+      first_name: "Frank",
+      last_name: "Oak",
+      email: "used@email.com",
+      password: "password",
+      password_confirmation: "password"
+    )
+    @user.authenticate_with_credentials("used@email.com","albatross")
+    expect(@user.errors.full_messages)
+      .to include("Last name can't be blank")
+    end
+  end
 
 end
-
-# It must be created with a password and password_confirmation fields
-#   These need to match so you should have an example for where they are not the same
-#   These are required when creating the model so you should also have an example for this
-# Emails must be unique (not case sensitive; for example, TEST@TEST.com should not be allowed if test@test.COM is in the database)
-# Email, first name, and last name should also be required
