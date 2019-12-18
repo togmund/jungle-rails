@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "ProductDetails", type: :feature, js: true do
+RSpec.feature "AddToCart", type: :feature, js: true do
 
   # SETUP
   before :each do
@@ -14,15 +14,16 @@ RSpec.feature "ProductDetails", type: :feature, js: true do
       )
     end
 
-  scenario "They see all details" do
+  scenario "Clicking add to an item increments the cart number" do
     # ACT
     visit root_path
-    find('header a').hover.click
+    expect(page).to have_text(" My Cart (0)")
+    find('button').hover.click
 
     # DEBUG
-    save_screenshot("product_details.png")
+    save_screenshot("add_to_cart.png")
 
     # VERIFY
-    expect(page).to have_text(@product1.description)
+    expect(page).to have_text(" My Cart (1)")
   end
 end
