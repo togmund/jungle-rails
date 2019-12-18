@@ -5,9 +5,7 @@ RSpec.feature "ProductDetails", type: :feature, js: true do
   # SETUP
   before :each do
     @category = Category.create! name: 'Apparel'
-
-    10.times do |n|
-      @category.products.create!(
+    @product1 = @category.products.create!(
         name:  Faker::Hipster.sentence(3),
         description: Faker::Hipster.paragraph(4),
         image: open_asset('apparel1.jpg'),
@@ -15,23 +13,30 @@ RSpec.feature "ProductDetails", type: :feature, js: true do
         price: 64.99
       )
     end
-  end
 
   scenario "They see all details" do
     # ACT
     visit root_path
+    find('header a').hover.click
 
     # DEBUG
     save_screenshot("product_details.png")
 
     # VERIFY
-    expect(page).to have_css 'article.product', count: 10
+    expect(page).to have_text(@product1.description)
   end
 end
 
+# Write a new feature spec that will test that users can navigate from the home page to the product detail page by clicking on a product.
 
-# You should just run the single feature and not previous ones, since feature specs, especially those using a real browser, are slow to run.
-# You will need to use the javascript-enabled (ie real) browser by specifying js: true in the feature declaration (see home page feature)
-# Use screenshots to debug
-# You can also use puts page.html to output the current HTML being rendered by our browser
-# Use the reference documents provided in the previous activity
+
+# scenario "Filter all bikes by model" do
+#   visit "/bicycles"
+
+#   fill_in "model", with: @bike1.model
+#   click_button("Search!")
+#   save_screenshot("filtered_by_model.png")
+
+#   expect(page).to have_css("div.bicycle", count: 1)
+#   expect(page).to have_text(@bike1.description)
+# end
